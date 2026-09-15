@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wordle Help</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <p class="eyebrow">Word Puzzle Helper</p>
+        <h1>Track your Wordle clues fast.</h1>
+        <p class="intro">
+          Fill in the green letters by position, add yellow letters in the spots
+          where they appeared, and type the letters that are not in the word.
+        </p>
+      </section>
+
+      <section class="panel">
+        <div class="group">
+          <div class="group__header">
+            <h2>Green Letters</h2>
+            <p>Put the exact letter in the exact square.</p>
+          </div>
+          <div class="tile-row" id="green-row">
+            <input class="tile tile--green" type="text" maxlength="1" data-kind="green" data-slot="1" aria-label="Green letter position 1" />
+            <input class="tile tile--green" type="text" maxlength="1" data-kind="green" data-slot="2" aria-label="Green letter position 2" />
+            <input class="tile tile--green" type="text" maxlength="1" data-kind="green" data-slot="3" aria-label="Green letter position 3" />
+            <input class="tile tile--green" type="text" maxlength="1" data-kind="green" data-slot="4" aria-label="Green letter position 4" />
+            <input class="tile tile--green" type="text" maxlength="1" data-kind="green" data-slot="5" aria-label="Green letter position 5" />
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group__header">
+            <h2>Yellow Letters</h2>
+            <p>Put any yellow letters in the square where they appeared.</p>
+          </div>
+          <div class="tile-row" id="yellow-row">
+            <input class="tile tile--yellow tile--yellow-multi" type="text" data-kind="yellow" data-slot="1" aria-label="Yellow letters position 1" />
+            <input class="tile tile--yellow tile--yellow-multi" type="text" data-kind="yellow" data-slot="2" aria-label="Yellow letters position 2" />
+            <input class="tile tile--yellow tile--yellow-multi" type="text" data-kind="yellow" data-slot="3" aria-label="Yellow letters position 3" />
+            <input class="tile tile--yellow tile--yellow-multi" type="text" data-kind="yellow" data-slot="4" aria-label="Yellow letters position 4" />
+            <input class="tile tile--yellow tile--yellow-multi" type="text" data-kind="yellow" data-slot="5" aria-label="Yellow letters position 5" />
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group__header">
+            <h2>Letters Not In The Word</h2>
+            <p>Type any letters Wordle ruled out.</p>
+          </div>
+          <label class="letters-field" for="blocked-letters">
+            <span class="letters-field__label">Blocked letters</span>
+            <textarea
+              id="blocked-letters"
+              rows="3"
+              placeholder="Example: rstln"
+              aria-label="Letters not in the word"
+            ></textarea>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button id="clear-button" type="button">Clear Board</button>
+        </div>
+      </section>
+
+      <section class="summary">
+        <div class="summary__card">
+          <p class="summary__label">Pattern</p>
+          <p class="summary__pattern" id="pattern-output">_ _ _ _ _</p>
+        </div>
+
+        <div class="summary__card">
+          <p class="summary__label">Yellow Clues</p>
+          <ul class="summary__list" id="yellow-output">
+            <li>No yellow letters yet.</li>
+          </ul>
+        </div>
+
+        <div class="summary__card">
+          <p class="summary__label">Blocked Letters</p>
+          <p class="summary__blocked" id="blocked-output">None</p>
+        </div>
+      </section>
+
+      <section class="results">
+        <div class="results__header">
+          <div>
+            <p class="summary__label">Possible Words</p>
+            <h2 id="results-count">9981 matches</h2>
+          </div>
+          <p class="results__hint">The list updates as you type.</p>
+        </div>
+        <div class="results__list" id="results-list"></div>
+      </section>
+
+      <section class="next-guess">
+        <div class="next-guess__card">
+          <p class="summary__label">Most Shared Letters</p>
+          <h2 id="best-guess-word">Start typing clues</h2>
+          <p class="next-guess__reason" id="best-guess-reason">
+            Ranks matching dictionary words by how often their letters appear
+            in the remaining words.
+          </p>
+          <div class="next-guess__actions">
+            <button id="next-best-guess-button" type="button">Show Next Choice</button>
+          </div>
+        </div>
+      </section>
+      <section class="next-guess" aria-labelledby="solver-heading">
+        <div class="next-guess__card">
+          <h2 id="solver-heading">Narrow Down the Answers</h2>
+          <p class="next-guess__reason">Simulates the color clues for each guess and chooses the smallest average number of answers left. Ties favor the smallest worst case, then a possible answer.</p>
+          <label for="solver-mode">Guesses to consider</label>
+          <select id="solver-mode">
+            <option value="answers">Matching dictionary words only</option>
+            <option value="explore">Full dictionary (can test other letters)</option>
+          </select>
+          <p class="next-guess__reason">Automatically considers every matching word in the full dictionary, weighted equally. Dictionary words are not guaranteed Wordle answers or accepted guesses. Exploring other words may conflict with hard mode.</p>
+          <div aria-live="polite" aria-atomic="true">
+            <h2 id="solver-word">Calculating…</h2>
+            <p class="next-guess__reason" id="solver-reason"></p>
+          </div>
+          <p id="solver-metrics" class="next-guess__reason"></p>
+          <details>
+            <summary id="solver-count">Remaining answers</summary>
+            <p id="solver-answers" class="next-guess__reason"></p>
+          </details>
+          <div class="next-guess__actions">
+            <button id="solver-next" type="button" disabled>Show Next Choice</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="words.js"></script>
+    <script src="solver.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
